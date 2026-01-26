@@ -1,13 +1,16 @@
-import './App.css'
+import { Home,LogIn, Signup } from "./components/Index.jsx";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
-  
-
   return (
     <>
-      <h1 className="">Basic setup</h1>
+      <Routes>
+        <Route path="/" element={<Home/>} />
+        <Route path="/blogsphere/signup" element={<Signup/>} />
+        <Route path="/blogsphere/logIn" element={<LogIn/>} />
+      </Routes>
     </>
   )
 }
 
-export default App
+export default App;
