@@ -2,9 +2,9 @@
 const variants = {
   formStyling: "max-h-max w-[27.5%] bg-[#FFFFFF] border-2 border-[#E5E7EB] rounded-2xl px-[2rem] py-[2rem]",
   mainStyling: "h-screen w-screen flex bg-[#F3F4F6] justify-center items-center relative",
-  headingStyling: "text-4xl text-[#111827] text-center font-medium",
+  headingStyling: "text-3xl mb-[2rem] text-[#111827] text-center font-medium",
   divStyling: "my-[1rem]",
-  labelStyling: "text-xl text-[#374151] font-medium",
+  labelStyling: "text-lg text-[#374151] font-medium",
   inputStyling:"w-full text-base rounded-lg bg-[#F9FAFB] border border-[#D1D5DB] text-[#111827] py-[0.6rem] px-[1rem] mt-[0.4rem] focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB]",
   buttonStyling:"w-full bg-[#2563EB] text-lg text-[#FFFFFF] hover:[#1D4ED8] cursor-pointer py-[0.4rem] px-[1rem] rounded-xl hover:bg-[#1D4ED8]",
 };
@@ -33,7 +33,7 @@ function LogIn() {
   return (
     <main className={`${variants.mainStyling}`}>
       <form className={`${variants.formStyling}`} onSubmit={handleSubmit}>
-        <h2 className={`${variants.headingStyling}`}> LogIn </h2>
+        <h2 className={`${variants.headingStyling}`}> LogIn into Account </h2>
 
         <div className={`${variants.divStyling}`}>
           <label htmlFor="username" className={`${variants.labelStyling}`}>
@@ -49,7 +49,7 @@ function LogIn() {
             onChange={handleChange}
             onBlur={handleBlur}
           ></input>
-            {errors.username && touched.username && <p className="text-red-800 text-sm">{errors.username}</p>}
+            {errors.username && touched.username && <p className="text-red-500 text-sm">{errors.username}</p>}
         </div>
 
         <div className={`${variants.divStyling}`}>
@@ -66,7 +66,7 @@ function LogIn() {
             onChange={handleChange}
             onBlur={handleBlur}
           ></input>
-            {errors.password && touched.password && <p className="text-red-800 text-sm">{errors.password}</p>}
+            {errors.password && touched.password && <p className="text-red-500 text-sm">{errors.password}</p>}
         </div>
 
         <button className={`${variants.buttonStyling}`}>LogIn</button>
@@ -79,7 +79,7 @@ function LogIn() {
         </p>
       </form>
 
-      <Link to="/" className="absolute top-10 left-12 text-gray-700 border border-gray-300 rounded-xl py-[0.4rem] px-[1rem] hover:text-gray-900 font-medium">
+      <Link to="/blogsphere" className="absolute top-10 left-12 text-gray-700 border border-gray-300 rounded-xl py-[0.4rem] px-[1rem] hover:text-gray-900 font-medium">
         <span className="flex items-center gap-1">
           <HiArrowLeft className="text-lg" />
           Back

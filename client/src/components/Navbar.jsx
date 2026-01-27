@@ -7,7 +7,7 @@ function handleClick(){
 }
 function Navbar() {
   return (
-    <header className="fixed h-[10vh] w-full bg-[#F9FAFB] border-b-2 border-b-[#E5E7EB]">
+    <header className="fixed h-[10vh] w-full bg-[#F9FAFB] border-b-2 border-b-[#E5E7EB] z-10">
       <nav className="h-full w-full px-[4rem] flex justify-between items-center">
         <h1 className="text-[#1D4ED8] font-bold text-4xl hover:text-[#1E40AF]">
           BlogSphere
@@ -18,7 +18,7 @@ function Navbar() {
             <CiSearch className="text-2xl" />
           </button>
         </form>
-        {/* <div>
+        <div>
           <Link to="/blogsphere/signup" className="bg-[#2563EB] text-base text-[#FFFFFF] mr-2 px-[0.8rem] py-[0.5rem] rounded-xl hover:bg-[#1E40AF]">
             <FiUserPlus className="inline-block mr-2 text-xl"/>
             Sign Up
@@ -27,8 +27,8 @@ function Navbar() {
             <FiLogIn className="inline-block mr-2 text-xl"/>
             Log In
           </Link>
-        </div> */}
-        <img src="https://i.pravatar.cc/150" className="h-[8vh] w-[4vw] rounded-[50%] cursor-pointer" onClick={handleClick}></img>
+        </div>
+        {/* <img src="https://i.pravatar.cc/150" className="h-[8vh] w-[4vw] rounded-[50%] cursor-pointer" onClick={handleClick}></img> */}
       </nav>
     </header>
   );

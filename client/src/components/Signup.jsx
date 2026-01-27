@@ -2,9 +2,9 @@
 const variants = {
   mainStyling: "h-screen w-screen flex bg-[#F3F4F6] justify-center items-center relative",
   formStyling: "max-h-max w-[30%] bg-[#FFFFFF] border-2 border-[#E5E7EB] rounded-2xl px-[2rem] py-[2rem]",
-  headingStyling: "text-4xl text-[#111827] text-center font-medium",
+  headingStyling: "text-3xl mb-[2rem] text-[#111827] text-center font-medium",
   divStyling: "my-[1rem]",
-  labelStyling: "text-xl text-[#374151] font-medium",
+  labelStyling: "text-lg text-[#374151] font-medium",
   inputStyling:"w-full text-base rounded-lg bg-[#F9FAFB] border border-[#D1D5DB] text-[#111827] py-[0.6rem] px-[1rem] mt-[0.4rem] focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB]",
   buttonStyling:"w-full bg-[#2563EB] text-lg text-[#FFFFFF] hover:[#1D4ED8] cursor-pointer py-[0.4rem] px-[1rem] rounded-xl hover:bg-[#1D4ED8]",
 };
@@ -32,7 +32,7 @@ function Signup() {
   return (
     <main className={`${variants.mainStyling}`}>
       <form className={`${variants.formStyling}`} onSubmit={handleSubmit}>
-        <h2 className={`${variants.headingStyling}`}>Sign Up</h2>
+        <h2 className={`${variants.headingStyling}`}>Create Account</h2>
 
         <div className={`${variants.divStyling}`}>
           <label htmlFor="username" className={`${variants.labelStyling}`}>
@@ -115,7 +115,7 @@ function Signup() {
         </p>
       </form>
 
-      <Link to="/" className="absolute top-10 left-12 text-gray-700 border border-gray-300 rounded-xl py-[0.4rem] px-[1rem] hover:text-gray-900 font-medium">
+      <Link to="/blogsphere" className="absolute top-10 left-12 text-gray-700 border border-gray-300 rounded-xl py-[0.4rem] px-[1rem] hover:text-gray-900 font-medium">
         <span className="flex items-center gap-1">
           <HiArrowLeft className="text-lg" />
           Back

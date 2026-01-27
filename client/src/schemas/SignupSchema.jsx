@@ -7,7 +7,7 @@ const signupSchema = Yup.object({
     .required("Username is required"),
 
     email: Yup.string()
-    .email()
+    .email("Email must be a valid")
     .required("Email is required"),
 
     password: Yup.string()
