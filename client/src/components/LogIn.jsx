@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { HiArrowLeft } from "react-icons/hi";
 import { useFormik } from "formik";
 import { logInSchema } from "../schemas/LogInSchema.jsx";
+import axios from "axios";
 
 const initialValues = {
   username: "", password: "",
@@ -24,8 +25,14 @@ function LogIn() {
   const {values,handleChange,handleBlur,handleSubmit,errors,touched} = useFormik({
     initialValues,
     validationSchema: logInSchema,
-    onSubmit: (values,action)=>{
-      console.log(values);
+    onSubmit: async (values,action) => {
+      try{
+        let res = await axios.post("http://localhost:4000/api/auth/login",values,{withCredentials: true});
+        console.log(res);
+      }catch(err){
+        console.log(err);
+      }
+      
       action.resetForm();
     }
   })

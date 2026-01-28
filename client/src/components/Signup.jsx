@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { HiArrowLeft } from "react-icons/hi";
 import { useFormik } from "formik";
 import { signupSchema } from "../schemas/SignupSchema";
+import axios from "axios";
 
 const initialValues = {
   username: "", email: "", password: "", confirmPassword: "",
@@ -23,9 +24,21 @@ function Signup() {
   const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
     initialValues,
     validationSchema: signupSchema,
-    onSubmit: (values,action)=>{
-      //console.log(values);
-      action.resetForm();
+    onSubmit: async (values,action) => {
+      try{
+        
+        // SIGN UP API 
+        await axios.post("http://localhost:4000/api/auth/signup",values,{withCredentials: true});
+
+        // LOGIN API
+        await axios.post("http://localhost:4000/api/auth/login",values,{withCredentials: true});
+
+        // RESET THE FORM 
+        action.resetForm();
+
+      }catch(err){
+        console.log(err);
+      }
     }
   })
 
@@ -41,8 +54,7 @@ function Signup() {
           <br />
           <input
             placeholder="Enter your username"
-            name="username" 
-            type="text"
+            name="username" type="text"
             className={`${variants.inputStyling}`}
             value={values.username}
             onChange={handleChange}
@@ -59,8 +71,7 @@ function Signup() {
           <br />
           <input
             placeholder="Enter your email"
-            name="email"
-            type="email"
+            name="email" type="email"
             className={`${variants.inputStyling}`}
             value={values.email}
             onChange={handleChange}
@@ -77,8 +88,7 @@ function Signup() {
           <br />
           <input
             placeholder="Enter your password"
-            name="password"
-            type="password"
+            name="password" type="password"
             value={values.password}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -95,8 +105,7 @@ function Signup() {
           <br />
           <input
             placeholder="Enter your confirmPassword"
-            name="confirmPassword"
-            type="password"
+            name="confirmPassword" type="password"
             value={values.confirmPassword}
             onChange={handleChange}
             onBlur={handleBlur}

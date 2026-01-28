@@ -7,7 +7,7 @@ const CategoriesLink = ["Business","Education & Career","Entertainment","Fashion
 
 function Sidebar() {
   return (
-    <aside className="fixed mt-[10vh] py-8 px-4 w-[20vw] h-[90vh] bg-white border-r border-gray-200 z-20">
+    <aside className="fixed mt-[10vh] py-8 px-4 w-[20vw] h-[90vh] bg-white border-r border-gray-200 z-10">
       {/* SIDEBAR LINKS */}
 
       <nav className="space-y-4">
