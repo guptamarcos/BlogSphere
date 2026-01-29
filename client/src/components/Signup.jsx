@@ -9,11 +9,13 @@ const variants = {
   buttonStyling:"w-full bg-[#2563EB] text-lg text-[#FFFFFF] hover:[#1D4ED8] cursor-pointer py-[0.4rem] px-[1rem] rounded-xl hover:bg-[#1D4ED8]",
 };
 
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { HiArrowLeft } from "react-icons/hi";
 import { useFormik } from "formik";
 import { signupSchema } from "../schemas/SignupSchema";
 import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 const initialValues = {
   username: "", email: "", password: "", confirmPassword: "",
@@ -21,18 +23,22 @@ const initialValues = {
 
 // SIGNUP FORM
 function Signup() {
+  const navigate = useNavigate();
+  const { getUser } = useContext(UserContext);
+
   const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
     initialValues,
     validationSchema: signupSchema,
     onSubmit: async (values,action) => {
       try{
-        
         // SIGN UP API 
         await axios.post("http://localhost:4000/api/auth/signup",values,{withCredentials: true});
 
         // LOGIN API
         await axios.post("http://localhost:4000/api/auth/login",values,{withCredentials: true});
-
+        
+        await getUser();
+        navigate("/blogsphere");
         // RESET THE FORM 
         action.resetForm();
 

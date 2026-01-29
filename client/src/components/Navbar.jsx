@@ -3,14 +3,13 @@ import { FiUserPlus, FiLogIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext.jsx";
+import { ShowProfilePopup } from "../context/ShowProfilePopupContext.jsx";
 
-function handleClick() {
-  console.log("clicked");
-}
 
 function Navbar() {
   const { user } = useContext(UserContext);
-
+  const { setShowProfilePopup } = useContext(ShowProfilePopup);
+  
   return (
     <header className="fixed h-[10vh] w-full bg-[#F9FAFB] border-b-2 border-b-[#E5E7EB] z-10">
       <nav className="h-full w-full px-[4rem] flex justify-between items-center">
@@ -45,7 +44,7 @@ function Navbar() {
         </div>
         }
 
-        {user && <img src="https://i.pravatar.cc/150" className="h-[8vh] w-[4vw] rounded-[50%] cursor-pointer" onClick={handleClick}></img>}
+        {user && <img src="https://i.pravatar.cc/150" className="h-[8vh] w-[4vw] rounded-[50%] cursor-pointer" onClick={()=>setShowProfilePopup((prev)=>!prev)}></img>}
       </nav>
     </header>
   );

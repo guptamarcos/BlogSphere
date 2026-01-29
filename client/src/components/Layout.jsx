@@ -1,10 +1,11 @@
 import { Navbar, Sidebar ,Footer,ProfilePopup } from "./Index.jsx";
 import { Outlet } from "react-router-dom";
-import { useState } from "react";
+import { useContext } from "react";
+import { ShowProfilePopup } from "../context/ShowProfilePopupContext.jsx";
 
 
 function Layout() {
-  const [showPopup,setShowPopup] = useState(false);
+  const {showProfilePopup} = useContext(ShowProfilePopup);
   return (
     <>
       <Navbar/>
@@ -12,7 +13,7 @@ function Layout() {
       <div className="relative h-full w-full pt-[10vh] pl-[20vw] flex flex-col">
         <Outlet/>
         <Footer/>
-        {showPopup && <ProfilePopup/>}
+        {showProfilePopup && <ProfilePopup/>}
       </div>
     </>
   );

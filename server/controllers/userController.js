@@ -52,7 +52,7 @@ async function loginController(req, res) {
   if (!username || !password) {
    return res.status(400).json({
       success: false,
-      message: "Username, Email, Password all fields are required",
+      message: "Username,Password all fields are required",
    });
   }
 
@@ -76,11 +76,11 @@ async function loginController(req, res) {
 
   const token = jwt.sign({userId: checkUser._id},process.env.JWT_SECRET_KEY,{expiresIn: "1d"});
   res.cookie("token",token,{
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      maxAge: 1*24*60*60*1000,
-      signed: true,
+   httpOnly: true,
+   secure: false,
+   sameSite: "lax",
+   maxAge: 1*24*60*60*1000,
+   signed: true,
   })
 
   return res.status(200).json({ success: true, 
@@ -94,7 +94,7 @@ async function loginController(req, res) {
 async function getUserDetails(req,res){
    const token = req.signedCookies.token;
 
-   // CHECKING TOKEN SUCCESSFULLY
+   // CHECKING TOKEN
    if(!token){
       return res.status(401).json("Token missing!!");
    }
@@ -117,15 +117,83 @@ async function getUserDetails(req,res){
 
 // ------> USER LOGOUT ROUTE  <---------
 async function logoutController(req, res) {
-   res.cookie("token","",{
+   res.clearCookie("token",{
       httpOnly: true,
       secure: false,
       sameSite: "lax",
-      expires: new Date(0),
       signed: true,
    })
-   return res.status(200).json("Logout successfully!!");
+   return res.status(200).json("Logout successful");
 }
 
 
-module.exports = { signupController, loginController, getUserDetails, logoutController };
+// ------> USER PASSWORD UPDATE ROUTE  <---------
+async function updateUser(req,res){
+   const { Bio, oldPassword, newPassword} = req.body;
+   
+   // CHECK OLDPASSWORD AND NEWPASSWORD EXIST OR NOT
+   if (!oldPassword || !newPassword ) {
+   return res.status(400).json({
+      success: false,
+      message: "Oldpassword and newPassword both are required",
+    });
+   }
+
+   const oldToken = req.signedCookies.token;
+   
+   // CHECKING TOKEN
+   if(!oldToken){
+      return res.status(401).json({success: false, message: "Token missing"});
+   }
+   
+   // DECODING TOKEN 
+   const decoded = jwt.verify(oldToken,process.env.JWT_SECRET_KEY);
+   
+   // CHECKING USER IS PRESENT OR NOT 
+   const user = await User.findOne({_id: decoded.userId});
+   if(!user){
+      return res.status(404).json({success: false, message: "User not found"});
+   }
+   
+   // CHECKING USER PASSWORD IS CORRECT OR NOT 
+   const comparePassword = await user.checkPassword(oldPassword);
+   if (!comparePassword) {
+   return res.status(401).json({ 
+      success: false, 
+      message: "Incorrect password!!" 
+    });
+   }
+
+   // UPDATING USER BIO IF PRESENT
+   if(Bio){
+      user.bio = Bio;
+      await user.save();
+   }
+   
+   // SAVING THE NEW PASSWORD 
+   await user.updatePassword(newPassword);
+
+   // CLEARING OLD PASSWORD COOKIE 
+   res.clearCookie("token",{
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      signed: true,
+   })
+   
+   // GENERATING NEW TOKEN
+   const newToken = jwt.sign({userId: user._id}, process.env.JWT_SECRET_KEY,{expiresIn:"1d"});
+   res.cookie("token",newToken,{
+      httpOnly: true,
+      signed: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 1*24*60*60*1000,
+   });
+
+   res.status(200).json({success: true, message: "User password updated successfully"});
+   
+} 
+
+
+module.exports = { signupController, loginController, getUserDetails, logoutController,updateUser };

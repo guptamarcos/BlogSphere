@@ -53,6 +53,12 @@ userSchema.pre("save",async function (){
   this.password = await bcrypt.hash(this.password, 10);
 });
 
+// UPDATE THE USER PASSWORD
+userSchema.methods.updatePassword = async function(newPassword){
+  this.password = newPassword;
+  await this.save();
+}
+
 // CHECK USER PASSWORD 
 userSchema.methods.checkPassword = async function(password){
   return await bcrypt.compare(password,this.password);
