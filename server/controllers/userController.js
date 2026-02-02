@@ -46,7 +46,7 @@ async function signupController(req, res) {
 
 // ------> USER LOGIN ROUTE  <---------
 async function loginController(req, res) {
-  let { username, password } = req.body;
+  const { username, password } = req.body;
 
   // CHECK USERNAME,EMAIL,PASSWORD EXIST OR NOT
   if (!username || !password) {
@@ -65,7 +65,7 @@ async function loginController(req, res) {
    });
   }
 
-  // CHECKING THE USER PASSWORD
+  // CHECKING THE USER PASSWORD IS CORRECT OR NOT
   const comparePassword = await checkUser.checkPassword(password);
   if (!comparePassword) {
    return res.status(401).json({ 
@@ -73,7 +73,8 @@ async function loginController(req, res) {
       message: "Incorrect password!!" 
    });
   }
-
+  
+  // PAYLOAD , SECRET_KEY , EXPIRY_TIME
   const token = jwt.sign({userId: checkUser._id},process.env.JWT_SECRET_KEY,{expiresIn: "1d"});
   res.cookie("token",token,{
    httpOnly: true,
@@ -83,9 +84,9 @@ async function loginController(req, res) {
    signed: true,
   })
 
-  return res.status(200).json({ success: true, 
+  return res.status(200).json({ 
+   success: true, 
    message: "User LoggedIn successfully!!",
-   token
   });
 }
 
@@ -98,20 +99,20 @@ async function getUserDetails(req,res){
    if(!token){
       return res.status(401).json("Token missing!!");
    }
-  
+   
+   // DECODING THE TOKEN
+   // DECODED IS THE OBJECT WHICH CONTAIN ALL THE INFORMATION WHICH WE SIGN IN JWT TOKEN 
    const decoded = jwt.verify(token,process.env.JWT_SECRET_KEY);
-
+   
+   // CHECK USER EXIST OR NOT
    const user = await User.findOne({_id:decoded.userId});
    if(!user){
       return res.status(404).json("User not found!!");
    }
    
    return res.status(200).json({
-      success: true, 
-      user: {
-        username: user.username,
-        email: user.email
-   }});
+      success: true, user
+   });
 }
 
 
@@ -128,8 +129,8 @@ async function logoutController(req, res) {
 
 
 // ------> USER PASSWORD UPDATE ROUTE  <---------
-async function updateUser(req,res){
-   const { Bio, oldPassword, newPassword} = req.body;
+async function updatePassword(req,res){
+   const { oldPassword, newPassword} = req.body;
    
    // CHECK OLDPASSWORD AND NEWPASSWORD EXIST OR NOT
    if (!oldPassword || !newPassword ) {
@@ -138,7 +139,7 @@ async function updateUser(req,res){
       message: "Oldpassword and newPassword both are required",
     });
    }
-
+   
    const oldToken = req.signedCookies.token;
    
    // CHECKING TOKEN
@@ -164,14 +165,8 @@ async function updateUser(req,res){
     });
    }
 
-   // UPDATING USER BIO IF PRESENT
-   if(Bio){
-      user.bio = Bio;
-      await user.save();
-   }
-   
    // SAVING THE NEW PASSWORD 
-   await user.updatePassword(newPassword);
+   await user.updateUserPassword(newPassword);
 
    // CLEARING OLD PASSWORD COOKIE 
    res.clearCookie("token",{
@@ -181,7 +176,7 @@ async function updateUser(req,res){
       signed: true,
    })
    
-   // GENERATING NEW TOKEN
+   // GENERATING NEW TOKEN FOR NEW PASSWORD
    const newToken = jwt.sign({userId: user._id}, process.env.JWT_SECRET_KEY,{expiresIn:"1d"});
    res.cookie("token",newToken,{
       httpOnly: true,
@@ -195,5 +190,34 @@ async function updateUser(req,res){
    
 } 
 
+// ------> UPDATE USER BIO <---------
+async function updateBio(req,res){
+   const { bio } = req.body;
 
-module.exports = { signupController, loginController, getUserDetails, logoutController,updateUser };
+   if(!bio){
+      return res.status(400).json({success: false, message: "Bio is missing"});
+   }
+
+   const token = req.signedCookies.token;
+   
+   if(!token){
+      return res.status(400).json({success: false, message: "Token is missing"});
+   }
+
+   const decoded = jwt.verify(token,process.env.JWT_SECRET_KEY);
+
+   const user = await User.findOne({_id: decoded.userId});
+   if(!user){
+      return res.status(404).json({success: false, message: "User not found"});
+   }
+
+   
+   console.log("updating bio");
+   user.bio = bio;
+   await user.save();
+   console.log("Bio is updated");
+
+   return res.status(200).json({success: true, message: "Bio updated successfully"});
+}
+
+module.exports = { signupController, loginController, getUserDetails, logoutController,updatePassword,updateBio };

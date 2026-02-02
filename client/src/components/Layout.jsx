@@ -10,7 +10,7 @@ function Layout() {
     <>
       <Navbar/>
       <Sidebar/>
-      <div className="relative h-full w-full pt-[10vh] pl-[20vw] flex flex-col">
+      <div className="h-full w-full pt-[10vh] pl-[20vw] flex flex-col">
         <Outlet/>
         <Footer/>
         {showProfilePopup && <ProfilePopup/>}

@@ -13,7 +13,7 @@ function Sidebar() {
    
       <nav className="space-y-4">
         <SidebarLink value="Home" Icon={FiHome} path="/blogsphere"/>
-        {user && <SidebarLink value="Blogs" Icon={FiFileText} path="/blogsphere/allblogs"/>}
+        {user && <SidebarLink value="Blogs" Icon={FiFileText} path="/blogsphere/user/allblogs"/>}
         {user && <SidebarLink value="Comments" Icon={FiMessageCircle} path="/blogsphere/allcomments"/>}
       </nav>
       

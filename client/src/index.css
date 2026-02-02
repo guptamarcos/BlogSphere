@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+.ck-editor__editable {
+  min-height: 350px;
+}
+
+.ck-editor {
+  border-radius: 0.5rem; 
+  overflow: hidden;
+}

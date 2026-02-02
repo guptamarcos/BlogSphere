@@ -6,7 +6,7 @@ const variants = {
   divStyling: "my-[1rem]",
   labelStyling: "text-lg text-[#374151] font-medium",
   inputStyling:"w-full text-base rounded-lg bg-[#F9FAFB] border border-[#D1D5DB] text-[#111827] py-[0.6rem] px-[1rem] mt-[0.4rem] focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB]",
-  buttonStyling:"w-full bg-[#2563EB] text-lg text-[#FFFFFF] hover:[#1D4ED8] cursor-pointer py-[0.4rem] px-[1rem] rounded-xl hover:bg-[#1D4ED8]",
+  buttonStyling:"w-full bg-[#2563EB] text-lg text-[#FFFFFF] hover:bg-[#1D4ED8] cursor-pointer py-[0.4rem] px-[1rem] rounded-xl hover:bg-[#1D4ED8]",
 };
 
 import { Link, useNavigate } from "react-router-dom";
@@ -33,8 +33,10 @@ function LogIn() {
       try{
         let res = await axios.post("http://localhost:4000/api/auth/login",values,{withCredentials: true});
         await getUser();
-        navigate("/blogsphere");
+
+        // RESET THE FORM
         action.resetForm();
+        navigate("/blogsphere");
       }catch(err){
         console.log(err);
       }
