@@ -22,9 +22,9 @@ const UserContextProvider = ({ children }) => {
   useEffect(() => {
     getUser();
   }, []);
-
+  
   return (
-    <UserContext.Provider value={{ user,getUser }}>
+    <UserContext.Provider value={{ user, setUser, getUser }}>
       {!loading && children}
     </UserContext.Provider>
   );

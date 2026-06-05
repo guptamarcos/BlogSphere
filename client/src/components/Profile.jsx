@@ -1,15 +1,19 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { useFormik } from "formik";
-import { profileSchema } from "../schemas/ProfileSchema.jsx";
+import { profileSchema } from "../validations/ProfileSchema.jsx";
 import axios from "axios";
 
 
 function Profile() {
-  const { user } = useContext(UserContext);
+  const { user, setUser, getUser } = useContext(UserContext);
+  const [imageFile, setImageFile] = useState(null);
+  const [profileImage,setProfileImage] = useState(
+    user.profileImage ? `http://localhost:4000${user.profileImage}` : "/default_user.svg"
+  );
 
   const initialValues = {
-    oldPassword: "", newPassword: "", bio: user.bio || "",
+    oldPassword: "", newPassword: "", bio: user.bio || "", 
   }
 
   const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
@@ -17,7 +21,6 @@ function Profile() {
     validationSchema: profileSchema,
     onSubmit: async (values,action) => {
       try{
-
         // IF BIO IS PRESENT THAN ONLY SEND THE REQUEST 
         if(values.bio.trim().length !== 0){
           await axios.patch("http://localhost:4000/api/auth/updateBio",{bio:values.bio},{withCredentials: true});
@@ -28,6 +31,16 @@ function Profile() {
           await axios.patch("http://localhost:4000/api/auth/updatePassword",{oldPassword: values.oldPassword, newPassword: values.newPassword},{withCredentials: true});
         }
         
+        if(imageFile){
+          const formData = new FormData();
+          formData.append("profileImage", imageFile);
+          const res = await axios.patch("http://localhost:4000/api/auth/updateUserProfileImage",
+            formData, {withCredentials: true, headers: {"Content-Type": "multipart/form-data"}}
+          );
+          setUser({...user,profileImage: res.data.profileImage});
+          getUser();
+          console.log(res);
+        }
         // RESET THE FORM
         action.resetForm();
       }catch(err){
@@ -35,7 +48,6 @@ function Profile() {
       }
     }
   })
-  
   return (
     <main className="h-max w-full py-[3rem] flex justify-center items-center">
       <form onSubmit={handleSubmit} className="h-max w-[65%] bg-[#FFFFFF] border-2 border-[#E5E7EB] rounded-2xl px-[4rem] py-[2rem]">
@@ -43,9 +55,16 @@ function Profile() {
         {/* PROFILE IMAGE */}
         <div className="flex flex-col items-center mb-8">
           <label htmlFor="profileImage" className="cursor-pointer">
-            <img src={"/default_user.svg"} alt="profileImage" className="h-[25vh] rounded-[50%] border-2 "></img>
+            <img src={profileImage} alt="profileImage" className="h-[25vh] rounded-[50%] border-2 "></img>
           </label>
-          <input id="profileImage" type="file" name="profileImage" className="hidden"></input>
+          <input id="profileImage" accept="image/*" type="file" name="profileImage" 
+          className="hidden" 
+          onChange={(evt)=> {
+            setImageFile(evt.target.files[0]);
+            setProfileImage(URL.createObjectURL(evt.target.files[0]));
+            } 
+          }>
+          </input>
         </div>
 
         {/* USER INFORMATION */}

@@ -12,7 +12,7 @@ const variants = {
 import { Link, useNavigate } from "react-router-dom";
 import { HiArrowLeft } from "react-icons/hi";
 import { useFormik } from "formik";
-import { logInSchema } from "../schemas/LogInSchema.jsx";
+import { logInSchema } from "../validations/LogInSchema.jsx";
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";

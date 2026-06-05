@@ -1,6 +1,25 @@
 import { CommentTableRow } from "./Index.jsx";
+import { useParams } from "react-router-dom";
+import { useEffect, useState} from "react";
+import axios from "axios";
 
 function AllCommentsTable() {
+  const { id } = useParams();
+  const [userBlogsComments,setUserBlogsComments] = useState([]);
+
+  async function getUserBlogsComments(){
+    try{
+      let res = await axios.get(`http://localhost:4000/api/auth/users/${id}/comments`, {withCredentials: true});
+      setUserBlogsComments(res.data.data);
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  useEffect(()=>{
+    getUserBlogsComments();
+  },[]);
+  
   return (
     <main className="min-h-[70vh] w-full border-b py-[3rem] px-[3rem] border-gray-200">
       <div className="border border-gray-200 p-[1.5rem] rounded-lg">
@@ -16,8 +35,10 @@ function AllCommentsTable() {
           </header>
 
           {/* COMMENTS ROW */}
-          <CommentTableRow/>
-          <CommentTableRow/>
+          {userBlogsComments?.map((commentValue)=>{
+            return <CommentTableRow  commentValue={commentValue} key={commentValue._id} getUserBlogsComments={getUserBlogsComments}/>
+          })}
+          
 
         </div>
       </div>

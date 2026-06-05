@@ -6,11 +6,13 @@ const ExpressError = require("../utils/ExpressError.js");
 async function connectDb() {
   try {
     if (!process.env.MONGO_URI) {
-      throw new ExpressError(500,"Database url not exist!!");
+      console.log("Database url not exist in env file")
+      throw new ExpressError(500, "Internal Server Error");
     }
     await mongoose.connect(process.env.MONGO_URI);
   } catch (err) {
-    throw new ExpressError(err.status,err.message);
+    console.log("Error in Database connection", err);
+    throw new ExpressError(err.status, err.message);
   }
 }
 

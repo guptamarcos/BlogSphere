@@ -6,8 +6,12 @@ const styles = {
 };
 
 import { TextEditor } from "./Index.jsx";
+import { useContext , useEffect } from "react";
+import { UserContext } from "../context/UserContext.jsx";
 
 function AddNewBlog() {
+  const {user} = useContext(UserContext);
+
   return (
     <main className="min-h-[70vh] w-full border-b py-[3rem] px-[4rem]  border-gray-200">
       <form className="border border-gray-200 p-[1.5rem] rounded-lg">
@@ -24,11 +28,11 @@ function AddNewBlog() {
         </div>
 
         <div className={`${styles.divStyling}`}>
-          <label htmlFor="Title" className={`${styles.labelStyling}`}>Title</label>
+          <label htmlFor="title" className={`${styles.labelStyling}`}>Title</label>
           <br />
           <input
             placeholder="Blog Title"
-            name="Title" type="text"
+            name="title" type="text"
             className={`${styles.inputStyling}`}
             ></input>
         </div>

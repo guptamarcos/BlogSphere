@@ -9,9 +9,9 @@ const commentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User", 
     },
-    commentedBlogOwner: {
+    blogId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "Blog",
     }
 }, {timestamps: true});
 

@@ -48,6 +48,8 @@ const userSchema = new mongoose.Schema({
 
 // PRE MIDDLEWARE FOR HASHING USER PASSWORD 
 userSchema.pre("save",async function (){
+  
+  // CHECKING PASSWORD IS CREATED OR MODIFIED
   if(!this.isModified("password")){
     return ;
   }
@@ -61,7 +63,6 @@ userSchema.methods.updateUserPassword = async function(newPassword){
   this.password = newPassword;
   await this.save();
 }
-
 
 // CHECK USER PASSWORD 
 userSchema.methods.checkPassword = async function(password){

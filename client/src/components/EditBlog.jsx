@@ -6,8 +6,17 @@ const styles = {
 };
 
 import { TextEditor } from "./Index.jsx";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState} from "react";
 
 function EditBlog() {
+  const { id } = useParams;
+
+  // useEffect(()=>{
+      
+  // },[]);
+  
   return (
     <main className="min-h-[70vh] w-full border-b py-[3rem] px-[4rem]  border-gray-200">
       <form className="border border-gray-200 p-[1.5rem] rounded-lg">

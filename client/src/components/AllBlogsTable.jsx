@@ -1,8 +1,26 @@
 import { BlogTableRow } from "./Index.jsx";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState} from "react";
+import axios from "axios";
 
 function AllBlogsTable() {
+  const [userBlogs, setUserBlogs] = useState([]);
   const navigate = useNavigate();
+
+  async function getUserAllBlogs(){
+    try{
+      let res = await axios.get("http://localhost:4000/api/blogs/userAllBlogs", {withCredentials: true});
+      setUserBlogs(res.data.data);      
+    }catch(err){
+      console.log(err);
+    }
+   }
+  
+  useEffect(()=>{
+    getUserAllBlogs();
+  },[]);
+  
+  
   return (
     <main className="min-h-[70vh] w-full border-b py-[3rem] px-[3rem] border-gray-200">
       <div className="border border-gray-200 p-[1.5rem] rounded-lg">
@@ -22,7 +40,10 @@ function AllBlogsTable() {
           </header>
           
           {/* ALL BLOGS ROWS */}
-          <BlogTableRow />
+          {userBlogs.map((blog)=>{
+            return <BlogTableRow blog={blog} key={blog._id} getUserBlogs={getUserAllBlogs}/>
+          })}
+          
         </div>
       </div>
     </main>

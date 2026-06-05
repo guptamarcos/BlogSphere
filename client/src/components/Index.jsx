@@ -13,6 +13,7 @@ import Footer from "./Footer.jsx";
 import Hero from "./Hero.jsx";
 import HomeCard from "./HomeCard.jsx";
 import Layout from "./Layout.jsx";
+import Loader from "./Loader.jsx";
 import LogIn from "./LogIn.jsx";
 import Navbar from "./Navbar.jsx";
 import Profile from "./Profile.jsx";
@@ -25,7 +26,7 @@ import TextEditor from "./TextEditor.jsx";
 
 export { 
 AddNewBlog, TextEditor, BlogDetail, BlogComments, CommentCard, RelatedBlogs,
-Navbar, Category, CategoriesLink, AllBlogsTable, Profile, Layout, 
+Navbar, Category, CategoriesLink, AllBlogsTable, Profile, Layout, Loader,
 Sidebar, SidebarLink, Hero, LogIn, Signup, Footer, HomeCard, EditBlog,
 ProfilePopup , BlogTableRow, AllCommentsTable, CommentTableRow
 };

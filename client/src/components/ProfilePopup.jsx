@@ -7,7 +7,7 @@ import { ShowProfilePopup } from "../context/ShowProfilePopupContext";
 
 function ProfilePopup() {
   const navigate = useNavigate();
-  const { getUser } = useContext(UserContext);
+  const { user, getUser } = useContext(UserContext);
   const { setShowProfilePopup, imgRef } = useContext(ShowProfilePopup);
   const element = useRef();
 
@@ -44,11 +44,11 @@ function ProfilePopup() {
 
       {/* User Info */}
       <div className="px-4">
-        <p className="text-gray-900 font-semibold">
-          Gauri Shankar
+        <p className="text-lg text-gray-900 font-semibold">
+          {user.username}
         </p>
         <p className="text-sm text-gray-500">
-          guptamarcos@gmail.com
+          {user.email}
         </p>
       </div>
 

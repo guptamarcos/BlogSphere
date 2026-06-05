@@ -1,15 +1,19 @@
 import { CiSearch } from "react-icons/ci";
 import { FiUserPlus, FiLogIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { useContext , useRef, useEffect} from "react";
+import { useContext , useRef, useEffect, useState} from "react";
 import { UserContext } from "../context/UserContext.jsx";
 import { ShowProfilePopup } from "../context/ShowProfilePopupContext.jsx";
 
 
 function Navbar() {
-  const { user } = useContext(UserContext);
+  const { user} = useContext(UserContext);
   const navProfileImg = useRef();
   const { setShowProfilePopup, setImgRef } = useContext(ShowProfilePopup);
+  const profileImage = user?.profileImage
+  ? `http://localhost:4000${user.profileImage}`
+  : "/default_user.svg";
+
 
   useEffect(()=>{
     setImgRef(navProfileImg);
@@ -49,7 +53,7 @@ function Navbar() {
         </div>
         }
 
-        {user && <img src="/default_user.svg" className="h-[8vh] w-[4vw] border-1 rounded-[50%] cursor-pointer" onClick={()=>setShowProfilePopup((prev)=>!prev)} ref={navProfileImg}></img>}
+        {user && <img src={profileImage} className="h-[8vh] w-[4vw] border-1 rounded-[50%] cursor-pointer" onClick={()=>setShowProfilePopup((prev)=>!prev)} ref={navProfileImg}></img>}
       </nav>
     </header>
   );

@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
-const blogSchema = new mongoose.Schema(
-  {
+const blogSchema = new mongoose.Schema({
     title: {
       type: String,
       required: [true, "Blog title is required"],
@@ -10,6 +9,10 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: [true, "Blog content is required"],
     },
+    blogImage: {
+      type: String,
+      default: "",
+    },
     likes: {
       type: Number,
       default: 0,
@@ -17,6 +20,8 @@ const blogSchema = new mongoose.Schema(
     category: {
       type: String,
       required: [true, "Category is required"],
+      trim: true,
+      lowercase: true,
     },
     allComments: [
       {

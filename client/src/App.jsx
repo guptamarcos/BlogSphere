@@ -16,17 +16,17 @@ function App() {
 
             <Route path="/blogsphere" element={<Layout />}>
               <Route index element={<Hero />} />
-              <Route path="user/allblogs" element={<AllBlogsTable/>} />
-              <Route path="allcomments" element={<AllCommentsTable />} />
-              <Route path="category/:categoryName" element={<Category />} />
+              <Route path="user/blogs" element={<AllBlogsTable/>} />
+              <Route path="user/:id/allBlogs/allComments" element={<AllCommentsTable />} />
+              <Route path="blog/category/:categoryName" element={<Category />} />
               <Route path="user/profile" element={<Profile />} />
               <Route path="newBlog" element={<AddNewBlog/>} />
-              <Route path="blogDetail" element={<BlogDetail/>} />
-              <Route path="editBlog" element={<EditBlog/>} />
-              <Route path="signup" element={<Signup />} />
-              <Route path="logIn" element={<LogIn />} />
+              <Route path="blog/:id" element={<BlogDetail/>} />
+              <Route path="blog/edit/:id" element={<EditBlog/>} />
             </Route>
             
+              <Route path="/blogsphere/signup" element={<Signup />} />
+              <Route path="/blogsphere/logIn" element={<LogIn />} />
           </Routes>
 
         </ShowProfilePopupProvider>
