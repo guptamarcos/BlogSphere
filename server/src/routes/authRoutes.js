@@ -3,13 +3,15 @@ const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const { verifyAndCheckToken } = require("../middlewares/auth.js");
 const {
-  signupController,
-  loginController,
-  logoutController,
+  signup,
+  login,
+  logout,
+  refreshToken,
 } = require("../controllers/authController.js");
 
-router.post("/signup", wrapAsync(signupController));
-router.post("/login", wrapAsync(loginController));
-router.post("/logout", verifyAndCheckToken, wrapAsync(logoutController));
+router.post("/signup", wrapAsync(signup));
+router.post("/login", wrapAsync(login));
+router.post("/logout", verifyAndCheckToken, wrapAsync(logout));
+router.post("/refresh",wrapAsync(refreshToken));
 
 module.exports = router;

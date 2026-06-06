@@ -27,7 +27,6 @@ const userRoutes = require("./src/routes/userRoutes.js");
 const blogRoutes = require("./src/routes/blogRoutes.js");
 const commentRoutes = require("./src/routes/commentRoutes.js");
 
-
 const connectDb = require("./src/config/connect.js");
 
 // CONNECTING DATABASE

@@ -1,6 +1,7 @@
 const User = require("../models/userSchema.js");
 const jwt = require("jsonwebtoken");
 const ExpressError = require("../utils/ExpressError.js");
+const bcrypt = require("bcrypt");
 
 async function registerService(body) {
   const { username, email, password } = body;
@@ -24,9 +25,10 @@ async function registerService(body) {
   if (emailExist) {
     throw new ExpressError(409, "Email is already exist");
   }
-
+  
   // CREATING NEW USER
   const newUser = await User.create({ username, email, password });
+  console.log(newUser);
 
   return {
     success: true,
@@ -40,8 +42,8 @@ async function registerService(body) {
 
 
 async function loginService(body) {
-  const { username, password } = req.body;
-
+  const { username, password } = body;
+  console.log(username, password);
   // CHECK USERNAME,PASSWORD EXIST OR NOT IN REQUEST BODY
   if (!username || !password) {
     throw new ExpressError(400, "Username, Password both fields are required");
@@ -52,9 +54,11 @@ async function loginService(body) {
   if (!user) {
     throw new ExpressError(404, "User not found");
   }
+  console.log(user);
 
   // CHECKING THE USER PASSWORD IS CORRECT OR NOT
-  const comparePassword = await user.checkPassword(password);
+  const comparePassword = await bcrypt.compare(password, user.password);
+  console.log(comparePassword)
   if (!comparePassword) {
     throw new ExpressError(401, "Invalid Credentials!!");
   }

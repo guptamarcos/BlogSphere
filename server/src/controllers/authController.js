@@ -1,12 +1,12 @@
 const authServices = require("../services/authServices.js");
 
-async function signupController(req, res) {
+async function signup(req, res) {
   const result = await authServices.registerService(req.body);
 
   return res.status(201).json(result);
 }
 
-async function loginController(req, res) {
+async function login(req, res) {
   const result = await authServices.loginService(req.body);
   res.cookie("token", result?.token, {
     httpOnly: true,
@@ -20,7 +20,7 @@ async function loginController(req, res) {
 }
 
 // ------> USER LOGOUT ROUTE  <---------
-async function logoutController(req, res) {
+async function logout(req, res) {
   res.clearCookie("token", {
     httpOnly: true,
     secure: false,
@@ -31,8 +31,16 @@ async function logoutController(req, res) {
   return res.status(200).json("Logout successful");
 }
 
+async function refreshToken(req,res){
+  return res.status(200).json({
+    success: true, 
+    message: "Refresh token working properly",
+  })
+}
+
 module.exports = {
-  signupController,
-  loginController,
-  logoutController,
+  signup,
+  login,
+  logout,
+  refreshToken
 };

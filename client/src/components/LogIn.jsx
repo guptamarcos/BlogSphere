@@ -38,6 +38,7 @@ function LogIn() {
         action.resetForm();
         navigate("/blogsphere");
       }catch(err){
+        console.log(err.name)
         console.log(err);
       }
     }
