@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
+const wrapAsync = require("../utils/wrapAsync.js");
 
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
@@ -52,26 +53,29 @@ const userSchema = new mongoose.Schema(
 );
 
 // PRE MIDDLEWARE FOR HASHING USER PASSWORD
-userSchema.pre("save", async function () {
-  // CHECKING PASSWORD IS CREATED OR MODIFIED
-  if (!this.isModified("password")) {
-    return;
-  }
+userSchema.pre(
+  "save",
+  wrapAsync(async function () {
+    // CHECKING PASSWORD IS CREATED OR MODIFIED
+    if (!this.isModified("password")) {
+      return;
+    }
 
-  this.password = await bcrypt.hash(this.password, 10);
-});
+    this.password = await bcrypt.hash(this.password, 10);
+  }),
+);
 
-userSchema.methods.generateRefreshToken = async function () {
+userSchema.methods.generateRefreshToken = wrapAsync(async function () {
   return jwt.sign({ userId: this._id }, process.env.REFRESH_TOKEN_KEY, {
     expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
   });
-};
+});
 
-userSchema.methods.generateAccessToken = async function () {
+userSchema.methods.generateAccessToken = wrapAsync(async function () {
   return jwt.sign({ userId: this._id }, process.env.ACCESS_TOKEN_KEY, {
     expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
   });
-};
+});
 
 const User = mongoose.model("User", userSchema);
 

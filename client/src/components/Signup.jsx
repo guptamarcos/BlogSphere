@@ -16,6 +16,7 @@ import { signupSchema } from "../validations/SignupSchema";
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { loginUser, registerUser } from "../api/authApi";
 
 const initialValues = {
   username: "", email: "", password: "", confirmPassword: "",
@@ -32,10 +33,9 @@ function Signup() {
     onSubmit: async (values,action) => {
       try{
         // SIGN UP API 
-        await axios.post("http://localhost:4000/api/auth/signup",values,{withCredentials: true});
-
+        await registerUser(values);
         // LOGIN API
-        await axios.post("http://localhost:4000/api/auth/login",{username: values.username,password: values.password},{withCredentials: true});
+        await loginUser({username: values.username, password: values.password});
         
         await getUser();
 

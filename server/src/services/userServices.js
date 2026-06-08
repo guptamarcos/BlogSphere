@@ -17,11 +17,11 @@ async function updatePassword(userId, body) {
   }
 
   const user = await User.findById(userId);
-  const comparePassword = await bcrypt.compare(password,this.password);
+  const comparePassword = await bcrypt.compare(password, this.password);
   if (!comparePassword) {
     throw new ExpressError(401, "Incorrect Password!!");
   }
-  
+
   user.password = newPassword;
   await user.save();
 
@@ -55,28 +55,18 @@ async function updateProfileImage(userId, file) {
   };
 }
 
-async function getUserBlogComments(userId) {
-  const userAllBlogsId = await Blog.find({ owner: userId }).select("_id");
+async function getUserBlogs(userId) {
+  const userAllBlogs = await Blog.find({ owner: userId }).populate(
+    "owner",
+    "username",
+  );
 
-  const userBlogAllComments = await Comment.find({
-    blogId: { $in: userAllBlogsId },
-  }).populate([
-    {
-      path: "owner",
-      select: "username",
-    },
-    {
-      path: "blogId",
-      select: "title",
-    },
-  ]);
-
-  return { success: true, data: userBlogAllComments };
+  return { success: true, data: userAllBlogs };
 }
 
 module.exports = {
   updatePassword,
   updateBio,
   updateProfileImage,
-  getUserBlogComments
+  getUserBlogs
 };

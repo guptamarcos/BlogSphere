@@ -2,7 +2,8 @@ import { BlogComments, RelatedBlogs } from "./Index.jsx";
 import { FaRegCalendarAlt, FaRegHeart,FaHeart, FaRegComment} from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { GetBlogInfo, UpdateBlogLikes } from "../api/blogApi.jsx";
+
 
 function BlogDetail() {
   const { id } = useParams();
@@ -12,9 +13,9 @@ function BlogDetail() {
 
   async function getBlogInfo () {
     try{
-      let res = await axios.get(`http://localhost:4000/api/blogs/${id}`, {withCredentials: true});
-      setBlog(res.data.data);
-      setBlogLikes(res.data.data.likes);
+      let res = await GetBlogInfo(id);
+      setBlog(res?.data);
+      setBlogLikes(res?.data?.likes);
     }catch(err){
       console.log(err);
     }
@@ -22,8 +23,8 @@ function BlogDetail() {
 
   async function handleLikes(){
     try{
-      let res = await axios.post(`http://localhost:4000/api/blogs/${id}/isLiked`, { isLiked }, {withCredentials: true});
-      setBlogLikes(res.data.likes);
+      let res = await UpdateBlogLikes(id, { isLiked });
+      setBlogLikes(res.likes);
       setIsLiked((prev)=> !prev);
     }catch(err){
       console.log(err);

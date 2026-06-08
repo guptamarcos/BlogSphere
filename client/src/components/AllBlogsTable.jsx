@@ -1,7 +1,7 @@
 import { BlogTableRow } from "./Index.jsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState} from "react";
-import axios from "axios";
+import { getUserBlogs } from "../api/userApi.jsx";
 
 function AllBlogsTable() {
   const [userBlogs, setUserBlogs] = useState([]);
@@ -9,8 +9,8 @@ function AllBlogsTable() {
 
   async function getUserAllBlogs(){
     try{
-      let res = await axios.get("http://localhost:4000/api/blogs/userAllBlogs", {withCredentials: true});
-      setUserBlogs(res.data.data);      
+      const res = await getUserBlogs();
+      setUserBlogs(res?.data);      
     }catch(err){
       console.log(err);
     }

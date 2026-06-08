@@ -1,6 +1,6 @@
 const authServices = require("../services/authServices.js");
 
-async function signup(req, res) {
+async function register(req, res) {
   const result = await authServices.registerService(req.body);
 
   return res.status(201).json(result);
@@ -16,7 +16,10 @@ async function login(req, res) {
     signed: true,
   });
 
-  return res.status(200).json(result);
+  return res.status(200).json({
+    success: result?.success,
+    message: result?.message,
+  });
 }
 
 // ------> USER LOGOUT ROUTE  <---------
@@ -39,7 +42,7 @@ async function refreshToken(req,res){
 }
 
 module.exports = {
-  signup,
+  register,
   login,
   logout,
   refreshToken

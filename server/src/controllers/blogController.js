@@ -13,14 +13,6 @@ async function getBlogInfo(req, res) {
   return res.status(200).json(result);
 }
 
-// GETTING USER ALL BLOGS
-async function getUserAllBlogs(req, res) {
-  const userId = req.user._id;
-  const result = await blogServices.getUserBlogs(userId);
-
-  return res.status(200).json(result);
-}
-
 // ALL LIKES
 async function handleLikes(req, res) {
   const { blogId } = req.params;
@@ -55,15 +47,20 @@ async function getAllCategory(req, res) {
   return res.status(200).json(result);
 }
 
+async function userAllBlogsAllComments(req, res) {
+  const result = await blogServices.getUserBlogComments(req.user._id);
+  return res.status(200).json(result);
+}
+
 // async function addBlog(req, res) {}
 
 module.exports = {
   getAllBlogs,
   getBlogInfo,
-  getUserAllBlogs,
   handleLikes,
   getAllCategory,
   getBlogsByCategory,
   getRelatedBlogs,
   deleteBlog,
+  userAllBlogsAllComments
 };

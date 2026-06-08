@@ -29,16 +29,19 @@ async function updateUserImage(req, res) {
   return res.status(200).json(result);
 }
 
+// GETTING USER ALL BLOGS
+async function getUserAllBlogs(req, res) {
+  const userId = req.user._id;
+  const result = await userServices.getUserBlogs(userId);
 
-async function userAllBlogsAllComments(req, res) {
-  const result = await userServices.getUserBlogComments(req.user._id);
   return res.status(200).json(result);
 }
 
+
 module.exports = {
   getUserDetails,
-  userAllBlogsAllComments,
   updateUserImage,
   updateUserPassword,
   updateUserBio,
+  getUserAllBlogs
 };

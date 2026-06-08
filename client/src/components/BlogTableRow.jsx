@@ -1,6 +1,6 @@
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { DeleteBlog } from "../api/blogApi.js";
 
 const commonStyle =
   "h-full w-full flex justify-start items-center px-4 py-6 border-r border-amber-50";
@@ -10,8 +10,7 @@ function BlogTableRow({blog, getUserAllBlogs}) {
 
   async function handleDelete(){
     try{
-      const res = await axios.delete(`http://localhost:4000/api/blogs/${blog._id}`, {withCredentials: true});
-      getUserAllBlogs();
+      await DeleteBlog(blog?._id)
     }catch(err){
       console.log(err);
     }

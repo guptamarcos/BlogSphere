@@ -1,5 +1,6 @@
 const Blog = require("../models/blogSchema.js");
 const User = require("../models/userSchema.js");
+const Comment = require("../models/commentSchema.js");
 
 async function getBlogs() {
   const allBlogs = await Blog.find({}).populate("owner", "username");
@@ -28,15 +29,6 @@ async function getBlogInfo(blogId) {
     success: true,
     data: blogInfo,
   };
-}
-
-async function getUserBlogs(userId) {
-  const userAllBlogs = await Blog.find({ owner: userId }).populate(
-    "owner",
-    "username",
-  );
-
-  return { success: true, data: userAllBlogs };
 }
 
 async function handleLikes(blogId, body) {
@@ -106,6 +98,24 @@ async function getAllCategories() {
   return { success: true, data: allCategory };
 }
 
+async function getUserBlogComments(userId) {
+  const userAllBlogsId = await Blog.find({ owner: userId }).select("_id");
+
+  const userBlogAllComments = await Comment.find({
+    blogId: { $in: userAllBlogsId },
+  }).populate([
+    {
+      path: "owner",
+      select: "username",
+    },
+    {
+      path: "blogId",
+      select: "title",
+    },
+  ]);
+
+  return { success: true, data: userBlogAllComments };
+}
 // async function getUserBlogs(){
 
 // }
@@ -113,10 +123,10 @@ async function getAllCategories() {
 module.exports = {
   getBlogs,
   getBlogInfo,
-  getUserBlogs,
   handleLikes,
   deleteBlog,
   getRelatedBlogs,
   getBlogsByCategory,
   getAllCategories,
+  getUserBlogComments
 };

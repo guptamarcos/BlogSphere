@@ -1,7 +1,8 @@
 import { CommentTableRow } from "./Index.jsx";
 import { useParams } from "react-router-dom";
 import { useEffect, useState} from "react";
-import axios from "axios";
+import { UserBlogComments } from "../api/blogApi.jsx";
+// import axios from "axios";
 
 function AllCommentsTable() {
   const { id } = useParams();
@@ -9,8 +10,8 @@ function AllCommentsTable() {
 
   async function getUserBlogsComments(){
     try{
-      let res = await axios.get(`http://localhost:4000/api/auth/users/${id}/comments`, {withCredentials: true});
-      setUserBlogsComments(res.data.data);
+      let res = await UserBlogComments();
+      setUserBlogsComments(res?.data);
     }catch(err){
       console.log(err);
     }

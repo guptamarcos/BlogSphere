@@ -16,6 +16,7 @@ import { logInSchema } from "../validations/LogInSchema.jsx";
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { loginUser } from "../api/authApi.jsx";
 
 const initialValues = {
   username: "", password: "",
@@ -31,7 +32,7 @@ function LogIn() {
     validationSchema: logInSchema,
     onSubmit: async (values,action) => {
       try{
-        let res = await axios.post("http://localhost:4000/api/auth/login",values,{withCredentials: true});
+        await loginUser(values);
         await getUser();
 
         // RESET THE FORM

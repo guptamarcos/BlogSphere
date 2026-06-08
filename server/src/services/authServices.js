@@ -28,7 +28,6 @@ async function registerService(body) {
   
   // CREATING NEW USER
   const newUser = await User.create({ username, email, password });
-  console.log(newUser);
 
   return {
     success: true,
@@ -40,25 +39,22 @@ async function registerService(body) {
   };
 }
 
-
 async function loginService(body) {
   const { username, password } = body;
-  console.log(username, password);
+ 
   // CHECK USERNAME,PASSWORD EXIST OR NOT IN REQUEST BODY
   if (!username || !password) {
     throw new ExpressError(400, "Username, Password both fields are required");
   }
 
   // CHECK USER DOCUMENT IS EXIST OR NOT
-  let user = await User.findOne({ username });
+  let user = await User.findOne({ username }).select("+password");
   if (!user) {
     throw new ExpressError(404, "User not found");
   }
-  console.log(user);
-
+  
   // CHECKING THE USER PASSWORD IS CORRECT OR NOT
-  const comparePassword = await bcrypt.compare(password, user.password);
-  console.log(comparePassword)
+  const comparePassword = await bcrypt.compare(password, user?.password);
   if (!comparePassword) {
     throw new ExpressError(401, "Invalid Credentials!!");
   }
