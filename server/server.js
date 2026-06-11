@@ -48,7 +48,7 @@ connectDb()
 
 // ROUTING MIDDLEWARE
 app.use("/api/auth", authRoutes);
-app.use("/api/auth",userRoutes);
+app.use("/api/users",userRoutes);
 app.use("/api/blogs",blogRoutes);
 app.use("/api/blogs/:blogId/comments",commentRoutes);
 
@@ -61,6 +61,7 @@ app.use((req,res,next)=>{
 
 // ERROR HANDLING MIDDLEWARE (Api Error)
 app.use((err,req,res,next)=>{
+  // console.log("This is the error", err);
   const { status=500 , message="Internal Server Error" } = err;
   res.status(status).json({success: false, message: message});
 })

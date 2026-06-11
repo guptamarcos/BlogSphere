@@ -9,7 +9,7 @@ function HomeCard({ blogInfo }) {
     >
       <header className="flex items-center gap-6">
         <img src= {blogInfo?.owner?.profileImage|| "/default_user.svg"} alt="User"
-          className="h-[8vh] w-[4vw] border rounded-[50%]"
+          className="h-[7vh] w-[3.5vw] border rounded-[50%]"
         ></img>
         <h4 className="text-lg font-semibold text-gray-600">
           <i>{blogInfo?.owner?.username}</i>

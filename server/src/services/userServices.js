@@ -29,7 +29,7 @@ async function updatePassword(userId, body) {
 }
 
 async function updateBio(userId, body) {
-  const { bio } = body;
+  const { bio } = body; 
 
   // IF BIO IS NOT PRESENT IN REQUEST BODY
   if (!bio) {
@@ -37,8 +37,14 @@ async function updateBio(userId, body) {
   }
 
   const user = await User.findOne({ _id: userId });
-  user.bio = bio;
-  await user.save();
+  try{
+    user.bio = bio;
+    await user.save();
+    console.log("user1", user);
+  }catch(err){
+    console.log(err);
+  }
+  console.log(user);
 
   return { success: true, message: "Bio updated successfully" };
 }

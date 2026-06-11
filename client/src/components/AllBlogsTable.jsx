@@ -1,7 +1,7 @@
 import { BlogTableRow } from "./Index.jsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState} from "react";
-import { getUserBlogs } from "../api/userApi.jsx";
+import { GetUserBlogs } from "../api/userApi.jsx";
 
 function AllBlogsTable() {
   const [userBlogs, setUserBlogs] = useState([]);
@@ -9,7 +9,7 @@ function AllBlogsTable() {
 
   async function getUserAllBlogs(){
     try{
-      const res = await getUserBlogs();
+      const res = await GetUserBlogs();
       setUserBlogs(res?.data);      
     }catch(err){
       console.log(err);

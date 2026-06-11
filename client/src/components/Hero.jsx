@@ -1,6 +1,6 @@
 import { HomeCard,Loader } from "./Index.jsx";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { GetBlogs } from "../api/blogApi.jsx";
 
 function Hero() {
   const [loader, setLoader] = useState(true);
@@ -8,8 +8,8 @@ function Hero() {
   useEffect(() => {
     async function getAllBlogs() {
       try {
-        let res = await axios.get("http://localhost:4000/api/blogs/getAllBlogs",{ withCredentials: true });
-        setAllBlogs(res.data.data);
+        let res = await GetBlogs();
+        setAllBlogs(res?.data);
       } catch (err) {
         console.log(err);
       } finally{

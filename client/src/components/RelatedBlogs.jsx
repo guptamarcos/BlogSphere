@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { GetRelatedBlogs } from "../api/blogApi.jsx";
 
 function RelatedBlogs({ id }) {
   const [relatedBlogs, setRelatedBlogs] = useState([]);
@@ -9,11 +9,8 @@ function RelatedBlogs({ id }) {
   useEffect(() => {
     async function getRelatedBlogs() {
       try {
-        let res = await axios.get(
-          `http://localhost:4000/api/blogs/${id}/relatedBlogs`,
-          { withCredentials: true },
-        );
-        setRelatedBlogs(res.data.relatedBlogs);
+        let res = await GetRelatedBlogs(id)
+        setRelatedBlogs(res?.relatedBlogs);
       } catch (err) {
         console.log(err);
       }

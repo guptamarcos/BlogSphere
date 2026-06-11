@@ -2,7 +2,7 @@ import { FaRegComments } from "react-icons/fa";
 import { CommentCard } from "./Index.jsx";
 // import axios from "axios";
 import { useEffect, useState} from "react";
-import { GetBlogComments } from "../api/blogApi.jsx";
+import { AddComment } from "../api/commentApi.jsx";
 
 function BlogComments({blogId, allComments, getBlogInfo}) {
   const [commentContent, setCommentContent] = useState("");
@@ -12,8 +12,7 @@ function BlogComments({blogId, allComments, getBlogInfo}) {
 
     try{
       if (!commentContent.trim()) return;
-      let res = await GetBlogComments(blogId);
-      console.log(res);
+      await AddComment(blogId, {commentContent});
       setCommentContent(""); 
       getBlogInfo();
     }catch(err){

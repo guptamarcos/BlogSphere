@@ -1,5 +1,5 @@
 import { FaTrash } from "react-icons/fa";
-import axios from "axios";
+import { DeleteComment } from "../api/commentApi.jsx";
 const commonStyle =
   "h-full w-full flex justify-start items-center px-4 py-3 border-r border-amber-50";
 
@@ -7,11 +7,14 @@ function CommentTableRow({commentValue,getUserBlogsComments}) {
 
   async function handleDelete(){
     try{
-      await axios.delete(`http://localhost:4000/api/blogs/${commentValue.blogId._id}/comments/${commentValue._id}`, {withCredentials: true});
+      const blogId = commentValue.blogId._id;
+      const commentId = commentValue._id;
+      await DeleteComment(blogId, commentId)
       getUserBlogsComments();
     }catch(err){
       console.log(err);
     }
+    
   }
 
   return (

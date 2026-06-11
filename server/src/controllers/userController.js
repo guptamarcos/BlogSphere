@@ -11,6 +11,7 @@ async function getUserDetails(req, res) {
 
 // ------> USER PASSWORD UPDATE ROUTE  <---------
 async function updateUserPassword(req, res) {
+  const userId = req.user._id;
   const result = await userServices.updatePassword(userId, req.body);
 
   return res.status(200).json(result);
@@ -18,6 +19,8 @@ async function updateUserPassword(req, res) {
 
 // ------> UPDATE USER BIO <---------
 async function updateUserBio(req, res) {
+  const userId = req.user._id;
+  console.log(req.body, userId);
   const result = await userServices.updateBio(userId, req.body);
   return res.status(200).json(result);
 }

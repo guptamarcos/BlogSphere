@@ -1,6 +1,6 @@
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { DeleteBlog } from "../api/blogApi.js";
+import { DeleteBlog } from "../api/blogApi.jsx";
 
 const commonStyle =
   "h-full w-full flex justify-start items-center px-4 py-6 border-r border-amber-50";

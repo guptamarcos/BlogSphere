@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { MdGridView } from "react-icons/md";
 import { HomeCard } from "./Index.jsx";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { GetBlogsByCategory } from "../api/blogApi.jsx";
 
 function Category() {
   const { categoryName } = useParams();
@@ -10,11 +10,8 @@ function Category() {
 
   async function getBlogsByCategory() {
     try {
-      let res = await axios.get(
-        `http://localhost:4000/api/blogs/category/${categoryName.toLowerCase()}`,
-        {withCredentials: true}
-      );
-      setBlogs(res.data.data)
+      let res = await GetBlogsByCategory(categoryName);
+      setBlogs(res.data)
     } catch (err) {
       console.log(err);
     }

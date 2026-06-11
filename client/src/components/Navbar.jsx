@@ -53,7 +53,7 @@ function Navbar() {
         </div>
         }
 
-        {user && <img src={profileImage} className="h-[8vh] w-[4vw] border-1 rounded-[50%] cursor-pointer" onClick={()=>setShowProfilePopup((prev)=>!prev)} ref={navProfileImg}></img>}
+        {user && <img src={profileImage} className="h-[6vh] w-[3vw] border rounded-[50%] cursor-pointer" onClick={()=>setShowProfilePopup((prev)=>!prev)} ref={navProfileImg}></img>}
       </nav>
     </header>
   );

@@ -4,7 +4,7 @@ const ExpressError = require("../utils/ExpressError.js");
 
 async function addComment(blogId, body, userId) {
   const { commentContent } = body;
-
+  console.log(blogId, body, userId);
   if (!commentContent || !commentContent.trim()) {
     throw new ExpressError(400, "Comment can't be empty");
   }
@@ -21,7 +21,7 @@ async function addComment(blogId, body, userId) {
     { new: true },
   );
 
-  return res.status(201).json({ success: true, data: currComment });
+  return { success: true, data: currComment };
 }
 
 async function deleteComment(commentId) {

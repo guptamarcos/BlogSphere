@@ -9,9 +9,10 @@ const {
   refreshToken,
 } = require("../controllers/authController.js");
 
+
 router.post("/register", wrapAsync(register));
 router.post("/login", wrapAsync(login));
 router.post("/logout", verifyAndCheckToken, wrapAsync(logout));
-router.post("/refresh",wrapAsync(refreshToken));
+router.post("/refresh-token",wrapAsync(refreshToken));
 
 module.exports = router;

@@ -11,12 +11,14 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
+      trim: true,
       required: [true, "Username is required"],
       minLength: [3, "Username must contain at least 3 characters"],
       maxLength: [50, "Username can't exceed the 30 characters"],
     },
     email: {
       type: String,
+      trim: true,
       required: [true, "Email is required"],
       unique: true,
       validate: {
@@ -26,6 +28,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+      trim: true,
       required: [true, "Password is required"],
       match: [
         passwordRegex,
@@ -48,33 +51,28 @@ const userSchema = new mongoose.Schema(
       trim: true,
       maxLength: [250, "Bio cannot exceed 250 characters"],
     },
+    refreshToken: {
+      type: String,
+      default: null,
+    },
+    refreshTokenExpiresAt: {
+      type: Date,
+      default: null,   
+    }
   },
   { timestamps: true },
 );
 
 // PRE MIDDLEWARE FOR HASHING USER PASSWORD
-userSchema.pre(
-  "save",
-  wrapAsync(async function () {
-    // CHECKING PASSWORD IS CREATED OR MODIFIED
+userSchema.pre("save", async function () {
+  try {
     if (!this.isModified("password")) {
       return;
     }
-
     this.password = await bcrypt.hash(this.password, 10);
-  }),
-);
-
-userSchema.methods.generateRefreshToken = wrapAsync(async function () {
-  return jwt.sign({ userId: this._id }, process.env.REFRESH_TOKEN_KEY, {
-    expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
-  });
-});
-
-userSchema.methods.generateAccessToken = wrapAsync(async function () {
-  return jwt.sign({ userId: this._id }, process.env.ACCESS_TOKEN_KEY, {
-    expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
-  });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 const User = mongoose.model("User", userSchema);

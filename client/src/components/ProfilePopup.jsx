@@ -1,9 +1,9 @@
 import { NavLink ,useNavigate} from "react-router-dom";
 import { FiEdit, FiLogOut, FiUser } from "react-icons/fi";
-import axios from "axios";
 import { useContext, useRef, useEffect} from "react";
 import { UserContext } from "../context/UserContext";
 import { ShowProfilePopup } from "../context/ShowProfilePopupContext";
+import { logoutUser } from "../api/authApi";
 
 function ProfilePopup() {
   const navigate = useNavigate();
@@ -13,23 +13,22 @@ function ProfilePopup() {
 
   useEffect(()=>{
     const handlePopup = (evt) =>{
-      
       // CHECK ELEMENT.CURRENT IS UNDEFINED OR NOT 
       // CHECK POP UP NOT CONTAIN THE CURRENT ELEMENT 
       if(!element.current?.contains(evt.target) && !imgRef.current?.contains(evt.target) ){
         setShowProfilePopup(false);
       }
     }
-    document.addEventListener("mousedown", handlePopup);
+    document.addEventListener("click", handlePopup);
 
     return ()=>{
-      document.removeEventListener("mousedown", handlePopup);
+      document.removeEventListener("click", handlePopup);
     } 
   },[]);
 
   async function handleLogout(){
     try{
-      await axios.post("http://localhost:4000/api/auth/logout",{},{withCredentials: true});
+      await logoutUser();
       setShowProfilePopup(false);
       await getUser();
       navigate("/blogsphere");

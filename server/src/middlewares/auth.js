@@ -5,33 +5,30 @@ const User = require("../models/userSchema.js");
 const verifyAndCheckToken = async (req, res, next) => {
   try {
     // GETTING THE TOKEN
-    const token = req.signedCookies?.token;
-    console.log(token);
-
+    const accessToken = req.signedCookies?.accessToken;
+    
     // CHECK THE TOKEN EXIST IN REQUEST BODY OR NOT
-    if (!token) {
-      return res.status(401).json({ message: "Token missing!" });
+    if (!accessToken) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     // DECODING THE TOKEN
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    console.log(decoded);
-
+    const decoded = await jwt.verify(accessToken, process.env.ACCESS_TOKEN_KEY);
+  
     // CHECKING THE USER
     const user = await User.findById(decoded.userId).select("-password");
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
-    }
-    console.log(user);
+    } 
 
     // ATTACHING THE USER TO THE REQUEST BODY
     req.user = user;
-    console.log("Auth", user);
 
     // PASSING THE CONTROL TO THE NEXT ROUTE OR MIDDLEWARE
     next();
   } catch (err) {
-    return res.status(404).json({success: false, message: err});
+    console.log("Error in the verifyAndCheckToken middleware " , err);
+    return res.status(401).json({ success: false, message: "Access token expired"});
   }
 };
 

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { useFormik } from "formik";
 import { profileSchema } from "../validations/ProfileSchema.jsx";
+import { UpdateBio, UpdatePassword, UpdateProfileImage } from "../api/userApi.jsx";
 import axios from "axios";
 
 
@@ -23,23 +24,20 @@ function Profile() {
       try{
         // IF BIO IS PRESENT THAN ONLY SEND THE REQUEST 
         if(values.bio.trim().length !== 0){
-          await axios.patch("http://localhost:4000/api/auth/updateBio",{bio:values.bio},{withCredentials: true});
+          await UpdateBio({bio: values.bio})
         }
 
         // IF PASSWORDS IS PRESENT THEN ONLY SEND THE REQUEST 
         if(values.oldPassword && values.newPassword){
-          await axios.patch("http://localhost:4000/api/auth/updatePassword",{oldPassword: values.oldPassword, newPassword: values.newPassword},{withCredentials: true});
+          await UpdatePassword({oldPassword: values.oldPassword, newPassword: values.newPassword})
         }
         
         if(imageFile){
           const formData = new FormData();
           formData.append("profileImage", imageFile);
-          const res = await axios.patch("http://localhost:4000/api/auth/updateUserProfileImage",
-            formData, {withCredentials: true, headers: {"Content-Type": "multipart/form-data"}}
-          );
-          setUser({...user,profileImage: res.data.profileImage});
+          let res = await UpdateProfileImage(formData)
+          setUser({...user,profileImage: res.profileImage});
           getUser();
-          console.log(res);
         }
         // RESET THE FORM
         action.resetForm();
